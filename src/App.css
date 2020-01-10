@@ -1,0 +1,17 @@
+@font-face {
+    font-family: 'Core';
+    src: url('./res/Core.otf');
+}
+
+.App {
+    position: relative;
+    width: 100%; height: 100%;
+    overflow: hidden;
+    background-color: rgb(47, 48, 63);
+    /* font */
+    font-family: 'Core';
+    line-height: 20px;
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: white;
+}
