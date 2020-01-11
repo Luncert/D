@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add rea ct-toastify
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add note-pty
 
 PATH: 
   C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\Docker\Docker\Resources\bin;C:\ProgramData\Anaconda3;C:\ProgramData\Anaconda3\Library\mingw-w64\bin;C:\ProgramData\Anaconda3\Library\usr\bin;C:\ProgramData\Anaconda3\Library\bin;C:\ProgramData\Anaconda3\Scripts;C:\Program Files\AdoptOpenJDK\jdk-11.0.3.7-hotspot\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\Git\cmd;C:\Go\bin;C:\Program Files (x86)\Yarn\bin\;C:\Users\27251\Downloads\apache-maven-3.6.1\bin\;C:\ProgramData\chocolatey\bin;C:\WINDOWS\System32\OpenSSH\;C:\MinGW\bin\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Users\27251\Downloads\flex\;C:\Users\27251\Downloads\DrMemory\bin\;C:\Program Files\nodejs\;C:\Users\27251\AppData\Local\Microsoft\WindowsApps;C:\Users\27251\Downloads\micro-1.4.1\;C:\Users\27251\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\27251\Downloads\chromedriver;C:\Users\27251\go\bin;C:\Users\27251\AppData\Local\Yarn\bin;C:\Users\27251\AppData\Local\hyper\app-3.0.2\resources\bin;C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2019.1.3\bin;;C:\Program Files\JetBrains\GoLand 2019.2.1\bin;;C:\Program Files\JetBrains\CLion 2019.2.1\bin;;;C:\Program Files\JetBrains\PyCharm 2019.2.5\bin;;C:\Users\27251\AppData\Roaming\npm;C:\Program Files\JetBrains\IntelliJ IDEA 2019.3.1\bin;
@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/ct-toastify: Not found
+  Error: https://registry.yarnpkg.com/note-pty: Not found
       at Request.params.callback [as _callback] (C:\Program Files (x86)\Yarn\lib\cli.js:65200:18)
       at Request.self.callback (C:\Program Files (x86)\Yarn\lib\cli.js:129590:22)
       at Request.emit (events.js:210:5)
@@ -30,6 +30,7 @@ npm manifest:
   {
     "name": "dmd",
     "version": "0.1.0",
+    "main": "main.js",
     "private": true,
     "scripts": {
       "start-electron": "electron .",
@@ -46,6 +47,7 @@ npm manifest:
       "react": "^16.12.0",
       "react-dom": "^16.12.0",
       "react-scripts": "3.3.0",
+      "react-toastify": "^5.5.0",
       "semantic-ui-css": "^2.4.1",
       "semantic-ui-react": "^0.88.2",
       "typescript": "3.7.4"
@@ -1132,7 +1134,7 @@ Lockfile:
     dependencies:
       regenerator-runtime "^0.13.2"
   
-  "@babel/runtime@^7.1.2", "@babel/runtime@^7.4.5", "@babel/runtime@^7.6.3", "@babel/runtime@^7.7.2":
+  "@babel/runtime@^7.1.2", "@babel/runtime@^7.4.2", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.3", "@babel/runtime@^7.7.2":
     version "7.7.7"
     resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.7.7.tgz#194769ca8d6d7790ec23605af9ee3e42a0aa79cf"
     integrity sha512-uCnC2JEVAu8AKB5do1WRIsvrdJ0flYx/A/9f/6chdacnEZ7LmavjdsDXr5ksYBegxtuTPR5Va9/+13QF/kFkCA==
@@ -3726,7 +3728,7 @@ Lockfile:
     dependencies:
       cssom "0.3.x"
   
-  csstype@^2.2.0:
+  csstype@^2.2.0, csstype@^2.6.7:
     version "2.6.8"
     resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.8.tgz#0fb6fc2417ffd2816a418c9336da74d7f07db431"
     integrity sha512-msVS9qTuMT5zwAGCVm4mxfrZ18BNc6Csd0oJAtiFMZ1FAx1CCvy2+5MDmYoix63LM/6NDbNtodCiGYGmFgO0dA==
@@ -4011,6 +4013,14 @@ Lockfile:
     integrity sha512-gd3ypIPfOMr9h5jIKq8E3sHOTCjeirnl0WK5ZdS1AW0Odt0b1PaWaHdJ4Qk4klv+YB9aJBS7mESXjFoDQPu6DA==
     dependencies:
       utila "~0.4"
+  
+  dom-helpers@^5.0.1:
+    version "5.1.3"
+    resolved "https://registry.yarnpkg.com/dom-helpers/-/dom-helpers-5.1.3.tgz#7233248eb3a2d1f74aafca31e52c5299cc8ce821"
+    integrity sha512-nZD1OtwfWGRBWlpANxacBEZrEuLa16o1nh7YopFWeoF68Zt8GGEmzHu6Xv4F3XaFIC+YXtTLrzgqKxFgLEe4jw==
+    dependencies:
+      "@babel/runtime" "^7.6.3"
+      csstype "^2.6.7"
   
   dom-serializer@0:
     version "0.1.1"
@@ -9361,6 +9371,26 @@ Lockfile:
       workbox-webpack-plugin "4.3.1"
     optionalDependencies:
       fsevents "2.1.2"
+  
+  react-toastify@^5.5.0:
+    version "5.5.0"
+    resolved "https://registry.yarnpkg.com/react-toastify/-/react-toastify-5.5.0.tgz#f55de44f6b5e3ce3b13b69e5bb4427f2c9404822"
+    integrity sha512-jsVme7jALIFGRyQsri/g4YTsRuaaGI70T6/ikjwZMB4mwTZaCWqj5NqxhGrRStKlJc5npXKKvKeqTiRGQl78LQ==
+    dependencies:
+      "@babel/runtime" "^7.4.2"
+      classnames "^2.2.6"
+      prop-types "^15.7.2"
+      react-transition-group "^4"
+  
+  react-transition-group@^4:
+    version "4.3.0"
+    resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.3.0.tgz#fea832e386cf8796c58b61874a3319704f5ce683"
+    integrity sha512-1qRV1ZuVSdxPlPf4O8t7inxUGpdyO5zG9IoNfJxSO0ImU2A1YWkEQvFPuIPZmMLkg5hYs7vv5mMOyfgSkvAwvw==
+    dependencies:
+      "@babel/runtime" "^7.5.5"
+      dom-helpers "^5.0.1"
+      loose-envify "^1.4.0"
+      prop-types "^15.6.2"
   
   react@^16.12.0:
     version "16.12.0"

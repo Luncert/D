@@ -19,25 +19,3 @@ html, body, #root {
   padding: 0px;
   overflow: hidden;
 }
-
-/* .margin2 {
-  margin: 2px;
-} */
-
-.scroller::-webkit-scrollbar {
-  margin-right: 2px;
-  width: 10px;
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-.scroller::-webkit-scrollbar-thumb {
-  background-color: rgb(66, 67, 83);
-}
-
-.scroller::-webkit-scrollbar-thumb:hover {
-  background-color: rgb(76, 78, 107);
-}
-
-.scroller::-webkit-scrollbar-track {
-  background-color: rgba(0, 0, 0, 0.1);
-}

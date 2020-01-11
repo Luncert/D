@@ -3,15 +3,84 @@
     src: url('./res/Core.otf');
 }
 
+@font-face {
+    font-family: 'Streetvertising-Light';
+    src: url('./res/Streetvertising-Light.ttf');
+}
+
+@font-face {
+    font-family: 'BinaryITCStd-Light';
+    src: url('./res/BinaryITCStd-Light.otf');
+}
+
+@font-face {
+    font-family: 'Davidbd';
+    src: url('./res/Davidbd.ttf');
+}
+
+@font-face {
+    font-family: 'Allencon';
+    src: url('./res/Allencon.ttf');
+}
+
+@font-face {
+    font-family: 'Zebra-Regular';
+    src: url('./res/Zebra-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Zebra-F';
+    src: url('./res/Zebra-F.ttf');
+}
+
+@font-face {
+    font-family: 'Bernhardmodbt-Bold';
+    src: url('./res/Bernhardmodbt-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'Annenski';
+    src: url('./res/Annenski.ttf');
+}
+
+@font-face {
+    font-family: 'FZZJ-OYCDKSJW';
+    src: url('./res/FZZJ-OYCDKSJW.ttf');
+}
+
+@font-face {
+    font-family: 'FZZhiATJW';
+    src: url('./res/FZZhiATJW.ttf');
+}
+
+/* TODO: letter-spacing and font-face are configurable */
 .App {
     position: relative;
     width: 100%; height: 100%;
     overflow: hidden;
     background-color: rgb(47, 48, 63);
     /* font */
-    font-family: 'Core';
-    line-height: 20px;
-    font-size: 20px;
-    letter-spacing: 2px;
+    font: normal normal normal 16px/16px 'Core','FZZhiATJW';
+    letter-spacing: 1px;
     color: white;
+}
+
+
+.scroller::-webkit-scrollbar {
+    margin-right: 2px;
+    width: 6px;
+    background-color: rgb(47, 48, 63);
+}
+
+.scroller::-webkit-scrollbar-thumb {
+    border-radius: 0;
+    background-color: rgba(95, 97, 114);
+}
+
+.scroller::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(95, 97, 114);
+}
+
+.scroller::-webkit-scrollbar-track {
+    background-color: rgb(47, 48, 63);
 }

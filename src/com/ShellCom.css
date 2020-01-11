@@ -6,7 +6,7 @@
 
 .container *::selection {
     color: white;
-    background-color: rgba(200, 200, 200, 0.5);
+    /* TODO: background-color: rgba(200, 200, 200, 0.5); */
 }
 
 .section {
@@ -28,9 +28,9 @@
 .tag-tail {
     display: block;
     position: absolute;
-    top: 0; right: -20px;
+    top: 0; right: -16px;
     width: 0px; height: 0px;
-    border: 10px solid transparent;
+    border: 8px solid transparent;
     z-index: 1;
 }
 
@@ -41,6 +41,9 @@
     margin-left: 13px;
     padding: 0px 5px;
     outline: none;
+    word-break: break-all;
+    word-wrap: normal;
+    overflow-wrap: break-word;
 }
 
 .cmd-output {
