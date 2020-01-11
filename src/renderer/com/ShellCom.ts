@@ -1,7 +1,7 @@
 
 class ShellCom {
 
-    private cwd: string
+    // private cwd: string
 
     execute() {
 

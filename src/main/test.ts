@@ -11,9 +11,8 @@ var ptyProcess = pty.spawn(shell, [], {
   env: process.env
 });
  
-ptyProcess.on('data', function(data) {
-//   process.stdout.write(data);
-console.log(data)
+ptyProcess.on('data', function(data: any) {
+  process.stdout.write('::' + data);
 });
  
 ptyProcess.write('ls\r');

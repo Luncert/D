@@ -1,31 +1,33 @@
 {
   "name": "dmd",
   "version": "0.1.0",
-  "main": "main.js",
+  "main": "dist/main.js",
   "private": true,
   "scripts": {
-    "start-electron": "electron .",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "npm-run-all build run-electron",
+    "dev": "concurrently \"webpack --watch\" \"electron .\"",
+    "build": "webpack --config webpack.config.js",
+    "run-electron": "electron ."
   },
   "dependencies": {
-    "@types/jest": "24.0.25",
-    "@types/node": "13.1.6",
-    "@types/react": "16.9.17",
-    "@types/react-dom": "16.9.4",
+    "electron": "^7.1.8",
+    "gulp": "^4.0.2",
+    "jquery": "^3.4.1",
     "node-pty": "^0.9.0",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-scripts": "3.3.0",
-    "react-toastify": "^5.5.0",
-    "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^0.88.2",
-    "typescript": "3.7.4"
+    "typescript": "^3.7.4",
+    "webpack": "^4.41.5"
   },
   "devDependencies": {
-    "electron": "^7.1.8"
+    "@types/electron": "^1.6.10",
+    "@types/jquery": "^3.3.31",
+    "@types/node": "13.1.6",
+    "concurrently": "^5.0.2",
+    "copy-webpack-plugin": "^5.1.1",
+    "html-webpack-plugin": "^3.2.0",
+    "npm-run-all": "^4.1.5",
+    "ts-loader": "^6.2.1",
+    "tslint": "^5.20.1",
+    "webpack-cli": "^3.3.10"
   },
   "browserslist": {
     "production": [
