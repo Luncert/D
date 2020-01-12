@@ -1,8 +1,17 @@
-import NAME from '../common/common';
 import $ from 'jquery';
+import ShellPanel from './com/ShellPanel';
+import Panel from './com/Panel';
 
-export function init() {
-  document.write(`<h1>The name is 111222${NAME}</h1>`);
+function renderPanel(root: HTMLElement, panel: Panel) {
+  let elem = panel.init()
+  $(elem.root).appendTo(root)
+  $(elem.style).appendTo(root)
+  panel.componentDidMount()
+}
+
+function init() {
+  let root = document.getElementById('root')
+  renderPanel(root, new ShellPanel())
 }
 
 $(document).ready(() => {

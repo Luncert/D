@@ -45,7 +45,7 @@ let renderer_config = Object.assign({}, common_config, {
   },
   plugins: [
     new CopyWebpackPlugin([{
-      from: './src/renderer/index.html',
+      from: './public',
       to: path.resolve(__dirname, 'dist')
     }])
   ]

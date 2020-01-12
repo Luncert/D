@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "start": "npm-run-all build run-electron",
-    "dev": "concurrently \"webpack --watch\" \"electron .\"",
+    "dev": "concurrently \"npm run watch\" \"electron .\"",
+    "watch": "webpack --watch",
     "build": "webpack --config webpack.config.js",
     "run-electron": "electron ."
   },
