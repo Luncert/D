@@ -15,11 +15,22 @@ let common_config = {
           /node_modules/,
            path.resolve(__dirname, "src/ui")
         ]
+      },
+      {
+        test: /\.css$/,
+        use: [
+          { loader: 'style-loader'},
+          { loader: 'css-loader' }
+        ]
+      },
+      {
+        test: /\.(ttf|otf)$/,
+        loader: 'file-loader'
       }
     ]
   },
   resolve: {
-    extensions: [ '.tsx', '.ts', '.js' ]
+    extensions: [ '.tsx', '.ts', '.js', '.css' ]
   },
 };
 

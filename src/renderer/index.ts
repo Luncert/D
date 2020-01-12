@@ -1,11 +1,11 @@
+import 'default-passive-events';
 import $ from 'jquery';
 import ShellPanel from './com/ShellPanel';
-import Panel from './com/Panel';
+import Component from './com/Component';
 
-function renderPanel(root: HTMLElement, panel: Panel) {
+function renderPanel(root: HTMLElement, panel: Component) {
   let elem = panel.init()
-  $(elem.root).appendTo(root)
-  $(elem.style).appendTo(root)
+  $(elem).appendTo(root)
   panel.componentDidMount()
 }
 

@@ -1,6 +1,6 @@
 import { app, BrowserWindow } from "electron";
-import * as path from "path";
-import * as url from "url";
+// import * as path from "path";
+// import * as url from "url";
 import __basedir from '../basepath';
 
 let mainWindow: Electron.BrowserWindow;
@@ -15,11 +15,15 @@ function createWindow() {
   });
 
   // and load the index.html of the app.
-  mainWindow.loadURL(url.format({
-      pathname: path.join(__basedir, "./dist/index.html"),
-      protocol: "file:",
-      slashes: true,
-  }));
+  // mainWindow.loadURL(url.format({
+  //     pathname: path.join(__basedir, "./dist/index.html"),
+  //     protocol: "file:",
+  //     slashes: true,
+  // }));
+
+  
+  // and load the index.html of the app.
+  mainWindow.loadURL("http://127.0.0.1:5500/dist/index.html");
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
