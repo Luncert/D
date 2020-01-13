@@ -9,7 +9,7 @@ export default class Component {
 
     }
 
-    // public componentDidUnmount() {
+    public componentDidUnmount() {
         
-    // }
+    }
 }

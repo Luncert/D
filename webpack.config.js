@@ -24,8 +24,12 @@ let common_config = {
         ]
       },
       {
-        test: /\.(ttf|otf)$/,
+        test: /\.(png|ttf|otf)$/,
         loader: 'file-loader'
+      },
+      {
+        test: /\.node$/,
+        loader: 'node-loader'
       }
     ]
   },
@@ -48,7 +52,7 @@ let main_config = Object.assign({}, common_config, {
 let renderer_config = Object.assign({}, common_config, {
   target: 'electron-renderer',
   entry: {
-    renderer: './src/renderer/index.ts',
+    renderer: './src/renderer/index.tsx',
   },
   output: {
     filename: '[name].js',

@@ -10,10 +10,11 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "experimentalDecorators": true,
     "sourceMap": true,
     "skipLibCheck": true,
     "allowJs": true,
-    "jsx": "preserve"
+    "jsx": "react"
   },
   "exclude": [
     "node_modules",

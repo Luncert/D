@@ -10,6 +10,7 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "experimentalDecorators": true,
     "sourceMap": true,
     "skipLibCheck": true,
     "allowJs": true,
