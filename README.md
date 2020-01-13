@@ -1,2 +1,2 @@
-# dmd
-Dmd is exprimental command line based on electron.
+# D
+D is exprimental command line based on electron.
