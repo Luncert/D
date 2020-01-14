@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { ipcRenderer } from 'electron';
 import open from 'open';
-import Q from 'jquery';
 
 import { Channels, WINDOW_STATE } from '../../common/window';
 
@@ -24,7 +23,15 @@ export default class Header extends Component<any, State> {
     }
 
     componentDidMount() {
-        Q(window).resize(() => this.setState({windowState: this.fetchWindowState()}))
+        window.addEventListener('resize', this.onResize.bind(this))
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.onResize.bind(this))
+    }
+
+    onResize() {
+        this.setState({ windowState: this.fetchWindowState() })
     }
 
     fetchWindowState() {

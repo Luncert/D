@@ -7,10 +7,6 @@
     overflow: hidden;
 }
 
-.panel {
-    padding: 2px;
-}
-
 .panel-wrapper {
     position: absolute;
     left: 0; top: 0;

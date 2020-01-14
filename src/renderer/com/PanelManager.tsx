@@ -1,6 +1,5 @@
 import React, { Component, MouseEventHandler } from 'react';
 import ShellPanel from './ShellPanel';
-import Q from 'jquery';
 
 import './PanelManager.css';
 
@@ -119,7 +118,6 @@ class Panel extends Component<PanelProps, PanelState> {
         const rootWidth = parseInt(rootStyle.getPropertyValue('width'))
         const rootHeight = parseInt(rootStyle.getPropertyValue('height'))
         if (init) {
-    
             let firstPanelBound, dividerPosition, secondPanelBound
     
             if (isHorizontal(this.direction)) {
@@ -141,24 +139,24 @@ class Panel extends Component<PanelProps, PanelState> {
             if (isHorizontal(this.direction)) {
                 const ratio = firstPanelBound.width / (firstPanelBound.width + DIVIDER_THICKNESS + secondPanelBound.width)
                 
-                let firstPanelWidth = rootWidth * ratio
+                let firstPanelWidth = Math.floor(rootWidth * ratio)
                 let secondPanelLeft = firstPanelWidth + DIVIDER_THICKNESS
 
                 this.setState({
-                    firstPanelBound: { width: firstPanelWidth, height: firstPanelBound.height},
+                    firstPanelBound: { width: firstPanelWidth, height: rootHeight},
                     dividerPosition: { left: firstPanelWidth, top: 0 },
-                    secondPanelBound: { left: secondPanelLeft, top: 0, width: rootWidth - secondPanelLeft, height: secondPanelBound.height }
+                    secondPanelBound: { left: secondPanelLeft, top: 0, width: rootWidth - secondPanelLeft, height: rootHeight }
                 })
             } else {
                 const ratio = firstPanelBound.height / (firstPanelBound.height + DIVIDER_THICKNESS + secondPanelBound.height)
 
-                let firstPanelHeight = rootHeight * ratio
+                let firstPanelHeight = Math.floor(rootHeight * ratio)
                 let secondPanelTop = firstPanelHeight + DIVIDER_THICKNESS
 
                 this.setState({
-                    firstPanelBound: { width: firstPanelBound.width, height: firstPanelHeight },
+                    firstPanelBound: { width: rootWidth, height: firstPanelHeight },
                     dividerPosition: { left: 0, top: firstPanelHeight },
-                    secondPanelBound: { left: 0, top: secondPanelTop, width: secondPanelBound.width, height: rootHeight - secondPanelTop}
+                    secondPanelBound: { left: 0, top: secondPanelTop, width: rootWidth, height: rootHeight - secondPanelTop}
                 })
             }
         }
@@ -193,8 +191,8 @@ class Panel extends Component<PanelProps, PanelState> {
     }
 
     public resize() {
-        this.computeLayout()
         if (this.splitted) {
+            this.computeLayout()
             this.firstPanelRef.resize()
             this.secondPanelRef.resize()
         }
@@ -255,11 +253,12 @@ class Panel extends Component<PanelProps, PanelState> {
                 </div>
             )
         } else {
-
+            return (
+                <div ref='root' className='panel'>
+                    {this.props.children}
+                </div>
+            )
         }
-        return (
-            <div ref='root' className='panel'>{this.props.children}</div>
-        )
     }
 }
 
@@ -267,21 +266,37 @@ export default class PanelManager extends Component {
 
     private childRef: Panel
 
+    private onResize: () => void
+    private onMouseMove: (evt: any) => void
+    private onMouseUp: () => void
+
     constructor(props: any) {
         super(props)
     }
 
     componentDidMount() {
-        Q(window).resize(() => this.childRef.resize())
-        Q(window).mousemove((evt) => this.childRef.onMouseMove(evt))
-        Q(window).mouseup(() => this.childRef.onMouseUp())
+        // notice: invoke resize.bind(this) twice will create two different function for resize()
+        this.onResize = this.childRef.resize.bind(this.childRef)
+        window.addEventListener('resize', this.onResize)
 
-        this.childRef.split(DIRECTION.ToBottom, <span><ShellPanel /></span>)
+        this.onMouseMove = this.childRef.onMouseMove.bind(this.childRef)
+        window.addEventListener('mousemove', this.onMouseMove)
+
+        this.onMouseUp = this.childRef.onMouseUp.bind(this.childRef)
+        window.addEventListener('mouseup', this.onMouseUp)
+
+        this.childRef.split(DIRECTION.ToBottom, <ShellPanel />)
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.onResize)
+        window.removeEventListener('mousemove', this.onMouseMove)
+        window.removeEventListener('mouseup', this.onMouseUp)
     }
 
     render() {
         return (
-            <div ref='root' style={{
+            <div id='panel-mananger' style={{
                 width: '100%', height: 'calc(100% - 30px)',
                 backgroundColor: 'rgb(34, 36, 53)'
             }}>

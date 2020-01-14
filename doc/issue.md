@@ -1,0 +1,2 @@
+* panel resize后ShellPanel resize时，根据window.getComputedStyle返回的width和height为空，猜测可能是panel 虽然resize了但是还没有更新到dom中（react的原因），这时就调用了ShellPanel注册在window上的resize监听器: 我在PanelManager上绑定childRef也就是panel的onResize等listener时，bind参数传的时PanelManager的this指针
+* ShellPanel中还会发生this.refs.root丢失的情况: https://stackoverflow.com/questions/35230020/this-refs-something-returns-undefined
