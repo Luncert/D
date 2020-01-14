@@ -18,7 +18,7 @@ export default class Header extends Component<any, State> {
     constructor(props: any) {
         super(props)
         this.state = {
-            headerText: 'D',
+            headerText: 'Ternimal D',
             windowState: this.fetchWindowState()
         }
     }
