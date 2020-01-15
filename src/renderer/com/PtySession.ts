@@ -15,9 +15,8 @@ export default class PtySession {
             cols: cols,
             rows: rows,
             cwd: process.env.HOME,
-            env: process.env
+            env: process.env,
         })
-
     }
 
     onData(dataProcessor: DataProcessor) {

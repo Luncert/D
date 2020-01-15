@@ -1,5 +1,5 @@
 {
-  "name": "dmd",
+  "name": "terminal-d",
   "version": "0.1.0",
   "main": "dist/main.js",
   "private": true,
@@ -23,6 +23,7 @@
     "uuid": "^3.3.3",
     "webpack": "^4.41.5",
     "xterm": "^4.3.0",
+    "xterm-addon-ligatures": "^0.2.1",
     "xterm-addon-web-links": "^0.2.1"
   },
   "devDependencies": {

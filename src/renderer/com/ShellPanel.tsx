@@ -5,7 +5,6 @@ import { WebLinksAddon } from 'xterm-addon-web-links';
 import 'xterm/css/xterm.css';
 
 import PtySession from './PtySession';
-import fontManager from './FontManager';
 import './ShellPanel.css';
 
 const MINIMUM_COLS = 2;
@@ -26,45 +25,45 @@ export default class ShellPanel extends Component {
         this.term = new Terminal({
             cursorBlink: true,
             cursorStyle: 'underline',
+            fontFamily: 'Consolas, monospace',
+            fontSize: 14,
             theme: {
                 foreground: 'white',
                 background: 'rgb(34, 36, 53)'
             }
         })
         this.term.loadAddon(new WebLinksAddon())
-        this.term.open(this.root)
+        this.term.open(this.root);
+        // this.term.registerCharacterJoiner((text) => {
+        //     console.log(text)
+        //     text = '123'
+        //     return [[7, 9]]
+        // })
 
         // resize container, terminal and node-pty
         let {cols, rows} = this.computeLayout()
         this.term.resize(cols, rows)
-        this.pty = new PtySession(cols, rows)
-        
-        // process data transport
-        this.pty.onData((data) => {
-            this.term.write(data)
-        })
-
-        this.term.onData((data) => {
-            // if (evt.domEvent.keyCode == 9) {
-            //     // Tab
-            // } else if (evt.domEvent.keyCode == 13) {
-            //     // Enter
-            //     this.term.write('\r\n')
-            // } else {
-            //     this.term.write(evt.key)
-            // }
-            this.pty.write(data)
-        })
+        this.term.write('luncert@luncert-station /home/r/:')
+        try {
+            this.pty = new PtySession(cols, rows)
+            // process data transport
+            this.term.onData((data) => this.pty.write(data))
+            this.pty.onData((data) => this.term.write(data))
+        } catch (e) {
+            console.error(e)
+        }
+        // if (evt.domEvent.keyCode == 9) {
+        //     // Tab
+        // } else if (evt.domEvent.keyCode == 13) {
+        //     // Enter
+        //     this.term.write('\r\n')
+        // } else {
+        //     this.term.write(evt.key)
+        // }
 
         // listen on window resize event
         this.onResize = this.resize.bind(this)
         window.addEventListener('resize', this.onResize)
-
-        fontManager.loadFontAsync('Core', () => {
-            this.term.setOption('fontFamily', 'Core')
-            // this.term.setOption('fontSize', 20)
-            this.term.setOption('letterSpacing', 1)
-        })
     }
     
     private onResize: () => void
@@ -72,7 +71,11 @@ export default class ShellPanel extends Component {
     componentWillUnmount() {
         window.removeEventListener('resize', this.onResize)
         this.term.dispose()
-        this.pty.close()
+        // failure to create pty in componentDidMount is possible: Windows error 232
+        if (this.pty) {
+            this.pty.close()
+            this.pty = null
+        }
     }
 
     resize() {
