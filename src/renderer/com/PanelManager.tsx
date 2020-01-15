@@ -285,7 +285,7 @@ export default class PanelManager extends Component {
         this.onMouseUp = this.childRef.onMouseUp.bind(this.childRef)
         window.addEventListener('mouseup', this.onMouseUp)
 
-        // this.childRef.split(DIRECTION.ToBottom, <ShellPanel />)
+        this.childRef.split(DIRECTION.ToBottom, <ShellPanel />)
     }
 
     componentWillUnmount() {

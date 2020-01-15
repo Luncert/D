@@ -6,6 +6,7 @@ import 'xterm/css/xterm.css';
 
 import PtySession from './PtySession';
 import './ShellPanel.css';
+import fontManager from './FontManager';
 
 const MINIMUM_COLS = 2;
 const MINIMUM_ROWS = 1;
@@ -60,6 +61,10 @@ export default class ShellPanel extends Component {
         // } else {
         //     this.term.write(evt.key)
         // }
+
+        fontManager.loadFontAsync('JetBrainsMono-Regular', () => {
+            this.term.setOption('fontFamily', 'JetBrainsMono-Regular')
+        })
 
         // listen on window resize event
         this.onResize = this.resize.bind(this)
