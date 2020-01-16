@@ -1,19 +1,25 @@
 import React, { Component, MouseEventHandler } from 'react';
 import ShellPanel from './ShellPanel';
+import am, { KEYS, CombineKey, keySequence } from './AcceleratorManager';
 
 import './PanelManager.css';
+import uuid from 'uuid';
 
 const DIRECTION = {
-    ToLeft: 0,
-    ToRight: 1,
-    ToTop: 2,
-    ToBottom: 3
+    Left: -1,
+    Right: 1,
+    Top: -2,
+    Bottom: 2
 }
 
 type Direction = number
 
 function isHorizontal(direction: Direction): boolean {
-    return direction <= DIRECTION.ToRight
+    return direction == DIRECTION.Left && direction == DIRECTION.Right
+}
+
+function isOpposite(direction1: Direction, direction2: Direction) {
+    return direction1 == -direction2
 }
 
 interface Position {
@@ -56,7 +62,8 @@ class PanelDivider extends Component<PanelDividerProps> {
 }
 
 interface PanelProps {
-    onRef: (ref: Panel) => void
+    registerPanel: (panel: Panel) => void // register panel to PanelManager
+    parent?: Panel
 }
 
 interface PanelState {
@@ -74,25 +81,63 @@ interface DragAttrs {
 const DIVIDER_THICKNESS = 4
 
 class Panel extends Component<PanelProps, PanelState> {
+    private id: string
 
     private splitted: boolean = false
     private direction: Direction
     private newPanelContent: JSX.Element
 
-    private firstPanelRef: Panel
-    private secondPanelRef: Panel
+    private parent: Panel
+    private firstPanel: Panel
+    private secondPanel: Panel
 
     private dragging: boolean = false
     private dragAttrs: DragAttrs
 
     constructor(props: PanelProps) {
         super(props)
+        this.id = `panel-${uuid()}`
+        this.parent = this.props.parent
         this.state = {
             firstPanelBound: { width: 0, height: 0},
             dividerPosition: { left: 0, top: 0 },
             secondPanelBound: { left: 0, top: 0, width: 0, height: 0},
         }
-        this.props.onRef(this)
+        this.props.registerPanel(this)
+    }
+
+    public getID() { return this.id; }
+
+    public getNeighbor(direction: Direction): Panel {
+        if (this.parent) {
+            const parent = this.parent
+
+            if (parent.firstPanel == this) {
+                if (direction == parent.direction) {
+                    return parent.secondPanel
+                }
+            } else if (isOpposite(direction, parent.direction)) {
+                return parent.firstPanel
+            }
+
+            let parentNeighbor = this.parent.getNeighbor(direction)
+            if (parentNeighbor != null) {
+                if (!parentNeighbor.splitted) {
+                    return parentNeighbor
+                } else {
+                    if (Math.abs(parent.direction) == Math.abs(parentNeighbor.direction)) {
+                        // both parent and parent neighbor are horizontal or vertical splitted
+                        return isOpposite(direction, parentNeighbor.direction) ?
+                            parentNeighbor.firstPanel : parentNeighbor.secondPanel
+                    } else {
+                        // return the left top child panel of parent neighbor
+                        return (parentNeighbor.direction == DIRECTION.Left || parentNeighbor.direction == DIRECTION.Top) ?
+                            parentNeighbor.firstPanel : parentNeighbor.secondPanel
+                    }
+                }
+            }
+        }
+        return null
     }
 
     /**
@@ -193,8 +238,8 @@ class Panel extends Component<PanelProps, PanelState> {
     public resize() {
         if (this.splitted) {
             this.computeLayout()
-            this.firstPanelRef.resize()
-            this.secondPanelRef.resize()
+            this.firstPanel.resize()
+            this.secondPanel.resize()
         }
     }
 
@@ -202,8 +247,8 @@ class Panel extends Component<PanelProps, PanelState> {
         if (this.dragging) {
             this.moveDivider(evt)
         } else if (this.splitted) {
-            this.firstPanelRef.onMouseMove(evt)
-            this.secondPanelRef.onMouseMove(evt)
+            this.firstPanel.onMouseMove(evt)
+            this.secondPanel.onMouseMove(evt)
         }
     }
 
@@ -215,22 +260,25 @@ class Panel extends Component<PanelProps, PanelState> {
         if (this.dragging) {
             this.dragging = false
         } else if (this.splitted) {
-            this.firstPanelRef.onMouseUp()
-            this.secondPanelRef.onMouseUp()
+            this.firstPanel.onMouseUp()
+            this.secondPanel.onMouseUp()
         }
     }
 
     render() {
         const { firstPanelBound, dividerPosition, secondPanelBound } = this.state
         if (this.splitted) {
-            let toRightOrBottom = (this.direction == DIRECTION.ToRight ||
-                this.direction == DIRECTION.ToBottom)
+            let toRightOrBottom = (this.direction == DIRECTION.Right ||
+                this.direction == DIRECTION.Bottom)
 
             return (
                 <div ref='root' className='panel-container'>
                     <div className='panel-wrapper'
                         style={firstPanelBound}>
-                        <Panel onRef={(ref) => this.firstPanelRef = ref}>
+                        <Panel parent={this} registerPanel={(childPanel) => {
+                            this.firstPanel = childPanel
+                            this.props.registerPanel(childPanel)
+                        }}>
                             {toRightOrBottom ? this.props.children : this.newPanelContent}
                         </Panel>
                     </div>
@@ -246,7 +294,10 @@ class Panel extends Component<PanelProps, PanelState> {
                     />
                     <div className='panel-wrapper'
                         style={secondPanelBound}>
-                        <Panel onRef={(ref) => this.secondPanelRef = ref}>
+                        <Panel parent={this} registerPanel={(childPanel) => {
+                            this.secondPanel = childPanel
+                            this.props.registerPanel(childPanel)
+                        }}>
                             {toRightOrBottom ? this.newPanelContent : this.props.children}
                         </Panel>
                     </div>
@@ -254,7 +305,7 @@ class Panel extends Component<PanelProps, PanelState> {
             )
         } else {
             return (
-                <div ref='root' className='panel'>
+                <div id={this.id} ref='root' className='panel active'>
                     {this.props.children}
                 </div>
             )
@@ -264,7 +315,10 @@ class Panel extends Component<PanelProps, PanelState> {
 
 export default class PanelManager extends Component {
 
-    private childRef: Panel
+    private keyDirectionMap: Map<string, Direction>
+
+    private rootPanel: Panel
+    private panelRegistry: Map<string, Panel>
 
     private onResize: () => void
     private onMouseMove: (evt: any) => void
@@ -272,20 +326,38 @@ export default class PanelManager extends Component {
 
     constructor(props: any) {
         super(props)
+        this.panelRegistry = new Map()
+
+        this.keyDirectionMap = new Map()
+            .set(KEYS.A, DIRECTION.Left)
+            .set(KEYS.D, DIRECTION.Right)
+            .set(KEYS.W, DIRECTION.Top)
+            .set(KEYS.S, DIRECTION.Bottom)
     }
 
     componentDidMount() {
         // notice: invoke resize.bind(this) twice will create two different function for resize()
-        this.onResize = this.childRef.resize.bind(this.childRef)
+        this.onResize = this.rootPanel.resize.bind(this.rootPanel)
         window.addEventListener('resize', this.onResize)
 
-        this.onMouseMove = this.childRef.onMouseMove.bind(this.childRef)
+        this.onMouseMove = this.rootPanel.onMouseMove.bind(this.rootPanel)
         window.addEventListener('mousemove', this.onMouseMove)
 
-        this.onMouseUp = this.childRef.onMouseUp.bind(this.childRef)
+        this.onMouseUp = this.rootPanel.onMouseUp.bind(this.rootPanel)
         window.addEventListener('mouseup', this.onMouseUp)
 
-        this.childRef.split(DIRECTION.ToBottom, <ShellPanel />)
+        // switch panel key binding: alt + [WASD]
+        am.register(this.switchActivePanel.bind(this),
+            keySequence(new CombineKey(KEYS.W, true)),
+            keySequence(new CombineKey(KEYS.A, true)),
+            keySequence(new CombineKey(KEYS.S, true)),
+            keySequence(new CombineKey(KEYS.D, true)))
+        // split panel key binding: ctrl + shift + [WASD]
+        am.register(this.splitPanel.bind(this),
+            keySequence(new CombineKey(KEYS.W, false, true, true)),
+            keySequence(new CombineKey(KEYS.A, false, true, true)),
+            keySequence(new CombineKey(KEYS.S, false, true, true)),
+            keySequence(new CombineKey(KEYS.D, false, true, true)))
     }
 
     componentWillUnmount() {
@@ -294,13 +366,34 @@ export default class PanelManager extends Component {
         window.removeEventListener('mouseup', this.onMouseUp)
     }
 
+    switchActivePanel(sourceName: string, mainKey: string) {
+        let targetPanel = this.panelRegistry.get(sourceName)
+        let direction = this.keyDirectionMap.get(mainKey)
+        let neighbor = targetPanel.getNeighbor(direction)
+        console.log(sourceName, mainKey, neighbor)
+    }
+
+    splitPanel(sourceName: string, mainKey: string) {
+        let targetPanel = this.panelRegistry.get(sourceName)
+        let direction = this.keyDirectionMap.get(mainKey)
+        targetPanel.split(direction, <span>hi</span>)
+        console.log(sourceName, mainKey)
+    }
+
+    registerPanel(panel: Panel) {
+        this.panelRegistry.set(panel.getID(), panel)
+    }
+
     render() {
         return (
             <div id='panel-mananger' style={{
                 width: '100%', height: 'calc(100% - 30px)',
                 backgroundColor: 'rgb(34, 36, 53)'
             }}>
-                <Panel onRef={(ref) => this.childRef = ref}><ShellPanel /></Panel>
+                <Panel ref={(panel) => this.rootPanel = panel}
+                    registerPanel={(panel) => this.registerPanel(panel)}>
+                    <ShellPanel />
+                </Panel>
             </div>
         )
     }

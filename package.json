@@ -9,7 +9,7 @@
     "watch": "webpack --watch",
     "build": "webpack --config webpack.config.js",
     "run-electron": "electron .",
-    "rebuild-node-pty": "electron-rebuild -f -w /node_modules/node-pty -m ./"
+    "install": "yarn install && electron-rebuild -f -w /node_modules/node-pty -m ./"
   },
   "dependencies": {
     "electron": "^7.1.8",

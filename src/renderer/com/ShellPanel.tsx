@@ -4,6 +4,7 @@ import { Terminal } from 'xterm';
 import { WebLinksAddon } from 'xterm-addon-web-links';
 import 'xterm/css/xterm.css';
 
+import am, { KeyEventHandler } from './AcceleratorManager';
 import PtySession from './PtySession';
 import './ShellPanel.css';
 import fontManager from './FontManager';
@@ -11,6 +12,34 @@ import fontManager from './FontManager';
 const MINIMUM_COLS = 2;
 const MINIMUM_ROWS = 1;
 const PADDING_LEFT = 4;
+
+class ShellKeyEventSource {
+
+    private panelID: string
+    private term: Terminal
+
+    constructor(panelID: string, term: Terminal) {
+        this.panelID = panelID
+        this.term = term
+    }
+
+    getName() {
+        return this.panelID
+    }
+
+    bind(handler: KeyEventHandler) {
+        // this.term.element.onkeypress = (evt) => console.log(evt)
+        this.term.element.onkeydown = (evt) => {
+            console.log(evt)
+        }
+        // this.term.onKey((evt) => console.log(evt.domEvent))
+        // this.term.element.parentElement.onkeydown = (evt) => {
+        //     console.log('1', evt)
+        //     if (evt.altKey) {
+        //     }
+        // }
+    }
+}
 
 export default class ShellPanel extends Component {
 
@@ -44,7 +73,6 @@ export default class ShellPanel extends Component {
         // resize container, terminal and node-pty
         let {cols, rows} = this.computeLayout()
         this.term.resize(cols, rows)
-        this.term.write('luncert@luncert-station /home/r/:')
         try {
             this.pty = new PtySession(cols, rows)
             // process data transport
@@ -53,14 +81,9 @@ export default class ShellPanel extends Component {
         } catch (e) {
             console.error(e)
         }
-        // if (evt.domEvent.keyCode == 9) {
-        //     // Tab
-        // } else if (evt.domEvent.keyCode == 13) {
-        //     // Enter
-        //     this.term.write('\r\n')
-        // } else {
-        //     this.term.write(evt.key)
-        // }
+
+        // make xterm be AcceleratorManager's event source
+        am.registerKeyEventSource(new ShellKeyEventSource(this.root.parentElement.id, this.term))
 
         fontManager.loadFontAsync('JetBrainsMono-Regular', () => {
             this.term.setOption('fontFamily', 'JetBrainsMono-Regular')
@@ -106,6 +129,6 @@ export default class ShellPanel extends Component {
     }
 
     render() {
-        return (<div ref={(elem) => this.root = elem} className='container'></div>)
+        return (<div ref={(elem) => this.root = elem} className='shell-container'></div>)
     }
 }
