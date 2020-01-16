@@ -8,6 +8,9 @@ interface FontInfo {
 
 const FontFace = (window as any).FontFace
 
+/**
+ * @deprecated
+ */
 class FontManager {
 
     private fontInfoMap: Map<string, FontInfo>

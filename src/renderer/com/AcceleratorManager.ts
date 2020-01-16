@@ -107,6 +107,9 @@ class AcceleratorManager {
         source.bind((evt) => this.keyEventHandler(source.getName(), evt))
     }
 
+    public emit(sourceName: string, ev: KeyboardEvent) {
+        this.keyEventHandler(sourceName, ev)
+    }
 
     /**
      * 按键事件处理
@@ -114,7 +117,6 @@ class AcceleratorManager {
      */
     private keyEventHandler(sourceName: string, ev: KeyboardEvent) {
         let ck = new CombineKey(ev.code, ev.altKey, ev.ctrlKey, ev.shiftKey);
-        console.log(sourceName, ev, ck)
 
         let tmp: KeyNode;
         for (let itr = this.matched.iterator(); itr.hasNext();) {

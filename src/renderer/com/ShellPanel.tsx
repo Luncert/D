@@ -7,7 +7,6 @@ import 'xterm/css/xterm.css';
 import am, { KeyEventHandler } from './AcceleratorManager';
 import PtySession from './PtySession';
 import './ShellPanel.css';
-import fontManager from './FontManager';
 
 const MINIMUM_COLS = 2;
 const MINIMUM_ROWS = 1;
@@ -55,7 +54,7 @@ export default class ShellPanel extends Component {
         this.term = new Terminal({
             cursorBlink: true,
             cursorStyle: 'underline',
-            fontFamily: 'Consolas, monospace',
+            fontFamily: 'JetBrainsMono-Regular, Consolas, monospace',
             fontSize: 14,
             theme: {
                 foreground: 'white',
@@ -84,10 +83,6 @@ export default class ShellPanel extends Component {
 
         // make xterm be AcceleratorManager's event source
         am.registerKeyEventSource(new ShellKeyEventSource(this.root.parentElement.id, this.term))
-
-        fontManager.loadFontAsync('JetBrainsMono-Regular', () => {
-            this.term.setOption('fontFamily', 'JetBrainsMono-Regular')
-        })
 
         // listen on window resize event
         this.onResize = this.resize.bind(this)

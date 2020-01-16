@@ -4,7 +4,7 @@ import open from 'open';
 
 import { Channels, WINDOW_STATE } from '../../common/window';
 
-import './FontStyle.css';
+import './IconStyle.css';
 import './Header.css';
 
 interface State {
