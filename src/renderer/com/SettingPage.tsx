@@ -1,18 +1,76 @@
 import React, { Component } from 'react';
-import { Button, Grid, List, Container, Icon } from "semantic-ui-react";
-import { SketchPicker } from 'react-color';
+import { Button, Grid, List, Container } from "semantic-ui-react";
+import { ChromePicker } from 'react-color';
+import ColorPicker from './ColorPicker';
 
 const styles =  require('./SettingPage.css') as any;
 
-class AppearanceSetting extends Component {
+interface AppearanceSettingState {
+    showColorPicker: boolean
+}
+
+class AppearanceSetting extends Component<any, AppearanceSettingState> {
+
+    constructor(props: any) {
+        super(props)
+        this.state = {
+            showColorPicker: false
+        }
+    }
+
+    onColorPick(color: string, c: any) {
+        console.log(color, c)
+    }
 
     render() {
+        const { showColorPicker } = this.state
+
         return (
             <div className={styles.appearanceSetting}>
                 <div className={styles.form}>
-                    <span className={styles.label}></span>
-                    <span>rgb(10, 10, 10)</span>
-                    <span className={styles.btnEdit}><Icon name='edit' /></span>
+                    <div className={styles.formField}>
+                        <span className={styles.label}>Theme Color</span>
+                        <span onClick={() => this.setState({showColorPicker: true})}
+                            style={{
+                                display: 'inline-block',
+                                boxSizing: 'border-box',
+                                marginTop: 2,
+                                marginLeft: 8,
+                                width: 16, height: 16,
+                                borderRadius: '50%',
+                                border: '2px solid white',
+                                cursor: 'pointer',
+                                backgroundColor: 'rgb(34, 36, 53)',
+                            }}></span>
+                        <span style={{ color: 'rgb(160, 160, 160)', marginLeft: 5}}>(Click to pick color)</span>
+                        <ColorPicker color={'rgb(34, 36, 53)'} onChange={null} onCancel={null} onSubmit={null} />
+                    </div>
+
+                    <div className={styles.formField}>
+                        <span className={styles.label}>Font Color</span>
+                        <span onClick={() => this.setState({showColorPicker: true})}
+                            style={{
+                                display: 'inline-block',
+                                boxSizing: 'border-box',
+                                marginTop: 2,
+                                marginLeft: 8,
+                                width: 16, height: 16,
+                                borderRadius: '50%',
+                                border: '2px solid white',
+                                cursor: 'pointer',
+                                backgroundColor: 'white',
+                            }}></span>
+                        <span style={{ color: 'rgb(160, 160, 160)', marginLeft: 5}}>(Click to pick color)</span>
+                        <ColorPicker color={'rgb(34, 36, 53)'} onChange={null} onCancel={null} onSubmit={null} />
+                    </div>
+                    
+                    <div className={styles.formField}>
+                        <span className={styles.label}>Font Family</span>
+                    </div>
+
+                </div>
+                <div style={{ position: 'absolute', right: 10, bottom: 10 }}>
+                    <Button disabled floated='right' primary>Apply</Button>
                 </div>
             </div>
         )
@@ -57,8 +115,8 @@ export default class SettingPanel extends Component<any, SettingPanelState> {
                         <div className={styles.titleRadius}></div>
                     </div>
                 </div>
-                <Grid style={{height: 'calc(100% - 80px)'}}>
-                    <Grid.Row columns={2}>
+                <Grid style={{height: 'calc(100% - 30px)'}}>
+                    <Grid.Row columns={2} style={{height: '100%'}}>
                         <Grid.Column width={3}>
                             <List>
                                 { categoryList.map((item, idx) =>
@@ -70,11 +128,6 @@ export default class SettingPanel extends Component<any, SettingPanelState> {
                             </List>
                         </Grid.Column>
                         <Grid.Column width={13}>{SETTINGS[activeCategoryIdx]}</Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Container>
-                            <Button disabled floated='right' primary>Apply</Button>
-                        </Container>
                     </Grid.Row>
                 </Grid>
             </div>

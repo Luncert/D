@@ -34,6 +34,9 @@ let common_config = {
                             options: {
                                 importLoaders: 1,
                                 modules: true,
+                                modules: {
+                                    localIdentName: "[name]_[local]_[hash:base64:5]",
+                                },
                             }
                         }
                     ]

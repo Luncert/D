@@ -1,16 +1,18 @@
-
 .container {
     position: relative;
     box-sizing: border-box;
     margin: 0 auto;
-    width: 90%; height: 100%;
+    width: 90%;
+    height: 100%;
     margin: 0px auto;
     color: white;
 }
 
 .header {
     position: relative;
-    width: 100%; height: 30px;
+    width: 100%;
+    height: 30px;
+    margin-bottom: 14px;
     text-align: center;
     border-bottom: 1px solid #1a69a4;
 }
@@ -30,23 +32,27 @@
 
 .titleRadius {
     position: absolute;
-    width: 10px; height: 10px;
+    width: 10px;
+    height: 10px;
 }
 
 .titleRadius:nth-of-type(1) {
-    left: -10px; bottom: 0;
+    left: -10px;
+    bottom: 0;
     background: radial-gradient(10px at 0px 0px, rgb(34, 36, 53) 10px, #1a69a4 10px);
 }
 
 .titleRadius:nth-of-type(2) {
-    right: -10px; bottom: 0;
+    right: -10px;
+    bottom: 0;
     background: radial-gradient(10px at 10px 0px, rgb(34, 36, 53) 10px, #1a69a4 10px);
 }
 
 .footbar {
     position: relative;
     padding-top: 10px;
-    width: 100%; height: 40px;
+    width: 100%;
+    height: 40px;
 }
 
 .category {
@@ -75,17 +81,26 @@
     position: relative;
     box-sizing: border-box;
     padding: 20px;
-    margin: 0 auto;
+    height: 100%;
     color: white;
 }
 
-.btnEdit {
-    display: inline-block;
-    width: 30px; height: 30px;
-    border-radius: 50%;
-    cursor: pointer;
+.form {}
+
+.formField {
+    position: relative;
+    display: block;
+    box-sizing: border-box;
+    margin: 10px;
+    width: 100%;
 }
 
-.btnEdit:hover {
-    background-color: #1a69a4;
+.formField * {
+    vertical-align: top;
+}
+
+.formField .label {
+    display: inline-block;
+    height: 20px;
+    margin-right: 5px;
 }

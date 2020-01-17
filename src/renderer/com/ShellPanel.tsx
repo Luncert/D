@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { Terminal } from 'xterm';
 import { WebLinksAddon } from 'xterm-addon-web-links';
-import 'xterm/css/xterm.css';
+import 'xterm/css/xterm.css?global';
 
 import am, { KeyEventHandler } from './AcceleratorManager';
 import PtySession from './PtySession';

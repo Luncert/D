@@ -3,7 +3,9 @@ import am, { KEYS, CombineKey, keySequence } from './AcceleratorManager';
 import { ipcRenderer } from 'electron';
 import { Channels } from '../../common/window';
 import SettingPanel from './SettingPage';
+import ShellPanel from './ShellPanel';
 
+// TODO: 切换page会卸载ShellPanel导致session关闭，在ShellPanel卸载的时候把pty收集起来
 const styles = require('./PanelManager.css') as any;
 
 interface Page {
@@ -22,7 +24,7 @@ export default class PanelManager extends Component<any, PanelManagerState> {
 
     constructor(props: any) {
         super(props)
-        this.pages = [{ name: 'python2.7', element: <div>empty page</div> }]
+        this.pages = [{ name: 'python2.7', element: <ShellPanel /> }]
         this.state = {
             activeViewIdx: 0
         }
