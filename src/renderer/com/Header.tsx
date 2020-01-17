@@ -4,8 +4,8 @@ import open from 'open';
 
 import { Channels, WINDOW_STATE } from '../../common/window';
 
-import './IconStyle.css';
-import './Header.css';
+const iconStyles = require('./IconStyle.css') as any;
+const styles = require('./Header.css') as any;
 
 interface State {
     headerText: string
@@ -41,17 +41,17 @@ export default class Header extends Component<any, State> {
     render() {
         const { headerText, windowState } = this.state
         return (
-            <div className='header'>
-                <div className='app-icon'
+            <div className={styles.header}>
+                <div className={styles.appIcon}
                     onClick={() => open('https://github.com/Luncert/D', {app: 'chrome'})}></div>
-                <div className='text-area'>{headerText}</div>
-                <div className='drag-area'></div>
-                <div className='btn-group'>
-                    <div className='btn'
+                <div className={styles.textArea}>{headerText}</div>
+                <div className={styles.dragArea}></div>
+                <div className={styles.btnGroup}>
+                    <div className={styles.btn}
                         onClick={() => this.setState({windowState: ipcRenderer.sendSync(Channels.MinimizeWindow)})}>
-                        <i className='iconfont icon2zuixiaohua-1'></i>
+                        <i className={`${iconStyles.iconfont} ${iconStyles.iconMinimal}`}></i>
                     </div>
-                    <div className='btn'
+                    <div className={styles.btn}
                         onClick={() => {
                             if (windowState == WINDOW_STATE.NORMAL) {
                                 this.setState({windowState: ipcRenderer.sendSync(Channels.MaximizeWindow)})
@@ -59,12 +59,12 @@ export default class Header extends Component<any, State> {
                                 this.setState({windowState: ipcRenderer.sendSync(Channels.UnmaximizeWindow)})
                             }
                         }}>
-                        <i className={'iconfont ' + (windowState === WINDOW_STATE.NORMAL ?
-                            'icon3zuidahua-1' : 'icon3zuidahua-3')}></i>
+                        <i className={iconStyles.iconfont + ' ' + (windowState === WINDOW_STATE.NORMAL ?
+                            iconStyles.iconMaximal1 : iconStyles.iconMaximal2)}></i>
                     </div>
-                    <div className='btn'
+                    <div className={styles.btn}
                         onClick={() => this.setState({windowState: ipcRenderer.sendSync(Channels.CloseWindow)})}>
-                        <i className='iconfont icon4guanbi-1'></i>
+                        <i className={`${iconStyles.iconfont} ${iconStyles.iconClose}`}></i>
                     </div>
                 </div>
             </div>

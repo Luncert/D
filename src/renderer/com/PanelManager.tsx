@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import './PanelManager.css'
 import am, { KEYS, CombineKey, keySequence } from './AcceleratorManager';
 import { ipcRenderer } from 'electron';
 import { Channels } from '../../common/window';
-import SettingPanel from './SettingPanel';
+import SettingPanel from './SettingPage';
+
+const styles = require('./PanelManager.css') as any;
 
 interface Page {
     name: string
@@ -65,22 +66,22 @@ export default class PanelManager extends Component<any, PanelManagerState> {
         let pageContent = this.pages[activeViewIdx].element
 
         return (
-            <div ref={(elem) => this.root = elem} className='panel-manager'>
-                <div className='page'>{pageContent}</div>
-                <div className='tag-bar'>
+            <div ref={(elem) => this.root = elem} className={styles.panelManager}>
+                <div className={styles.page}>{pageContent}</div>
+                <div className={styles.tagBar}>
                     {
                         this.pages.map((item, idx) => {
                             if (idx == activeViewIdx) {
                                 return (
-                                    <div key={idx} className='tag active'>
-                                        <div className='tag-radius'></div>
+                                    <div key={idx} className={`${styles.tag} ${styles.active}`}>
+                                        <div className={styles.tagRadius}></div>
                                         {item.name}
-                                        <div className='tag-radius'></div>
+                                        <div className={styles.tagRadius}></div>
                                     </div>
                                 )
                             } else {
                                 return (
-                                    <div key={idx} className='tag'>{item.name}</div>
+                                    <div key={idx} className={styles.tag}>{item.name}</div>
                                 )
                             }
                         })
