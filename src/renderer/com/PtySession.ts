@@ -1,8 +1,5 @@
-import os from 'os';
 import { IPty } from 'node-pty';
 const NodePty = <any>require('node-pty');
-
-const SHELL = os.platform() === 'win32' ? 'cmd.exe' : 'bash'
 
 export type DataProcessor = (data: string) => void
 
@@ -10,7 +7,7 @@ export default class PtySession {
     private ptyProc: IPty
 
     constructor(cols: number, rows: number) {
-        this.ptyProc = NodePty.spawn(SHELL, [], {
+        this.ptyProc = NodePty.spawn('powershell.exe', ['-NoLogo'], {
             name: 'xterm-color',
             cols: cols,
             rows: rows,

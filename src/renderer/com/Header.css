@@ -10,7 +10,8 @@
     position: absolute;
     box-sizing: border-box;
     left: 0; top: 0;
-    width: 30px; height: 30px;
+    margin: 3px;
+    width: 24px; height: 24px;
     background-image: url('../res/icon.png');
     background-size: cover;
     cursor: pointer;

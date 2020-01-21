@@ -4,12 +4,9 @@ import {
     Menu,
     ipcMain
 } from "electron";
-// import * as path from "path";
-// import * as url from "url";
+import * as path from "path";
+import * as url from "url";
 import { Channels, WINDOW_STATE } from '../common/window';
-import __basedir from '../basepath';
-import ComponentFactory from './com/ComponentFactory';
-import ShellCom from "./com/ShellCom";
 
 let window: Electron.BrowserWindow;
 
@@ -44,20 +41,16 @@ function createWindow() {
         minHeight: 400
     });
 
-    // and load the index.html of the app.
-    // mainWindow.loadURL(url.format({
-    //     pathname: path.join(__basedir, "./dist/index.html"),
-    //     protocol: "file:",
-    //     slashes: true,
-    // }));
+    window.loadURL(url.format({
+        pathname: path.resolve(__dirname, "./index.html"),
+        protocol: "file:",
+        slashes: true,
+    }));
 
+    // window.loadURL("http://127.0.0.1:5500/build/index.html");
+    // window.webContents.openDevTools();
 
-    // and load the index.html of the app.
-    window.loadURL("http://127.0.0.1:5500/dist/index.html");
     Menu.setApplicationMenu(null);
-
-    // Open the DevTools.
-    window.webContents.openDevTools();
 
     // listen window control event
     ipcMain.on(Channels.FetchWindowState, (event) => {
@@ -85,16 +78,16 @@ function createWindow() {
     });
 
     // load components
-    let componentFactory = new ComponentFactory();
-    componentFactory.loadComponent(new ShellCom());
-    componentFactory.serve();
+    // let componentFactory = new ComponentFactory();
+    // componentFactory.loadComponent(new ShellCom());
+    // componentFactory.serve();
 
     // Emitted when the window is closed.
     window.on("closed", () => {
         // Dereference the window object, usually you would store windows
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
-        componentFactory.stop();
+        // componentFactory.stop();
         window = null as any;
     });
 }

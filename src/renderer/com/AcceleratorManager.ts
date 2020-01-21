@@ -87,6 +87,8 @@ class KeyNode extends NTreeNode<CombineKey> {
  */
 class AcceleratorManager {
 
+    private activate: boolean
+
     /**
      * 使用多叉树存储快捷键组合，用KeyNode做节点，CombineKey做节点值
      */
@@ -98,6 +100,7 @@ class AcceleratorManager {
     private matched: LinkedList<KeyNode>;
 
     constructor() {
+        this.activate = true
         this.root = new KeyNode(null);
         this.matched = new LinkedList();
         // document.onkeydown = this.keyEventHandler.bind(this)
@@ -116,6 +119,10 @@ class AcceleratorManager {
      * @param ev 
      */
     private keyEventHandler(sourceName: string, ev: KeyboardEvent) {
+        if (!this.activate) {
+            return
+        }
+
         let ck = new CombineKey(ev.code, ev.altKey, ev.ctrlKey, ev.shiftKey);
 
         let tmp: KeyNode;
@@ -164,6 +171,14 @@ class AcceleratorManager {
         }
     }
 
+    public enable() {
+        this.activate = true
+    }
+
+    public disable() {
+        this.activate = false
+        this.matched.clear()
+    }
 }
 
 export default new AcceleratorManager();

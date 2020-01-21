@@ -91,6 +91,11 @@ export default class LinkedList<T> implements Itrable<T> {
         return node.data;
     }
 
+    public clear() {
+        this.tail = this.head = new ListNode(null, null);
+        this.sz = 0;
+    }
+
     public forEach(callbackfn: (value: T, index: number) => void): void {
         let node = this.head.next;
         for (let i = 0; i < this.sz; i++) {

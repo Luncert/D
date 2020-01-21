@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Button, Grid, List, Container } from "semantic-ui-react";
-import { ChromePicker } from 'react-color';
+import { Button, Grid, List } from "semantic-ui-react";
 import ColorPicker from './ColorPicker';
 
-const styles =  require('./SettingPage.css') as any;
+import { PageProps } from './PanelManager';
+
+const styles =  require('./SettingPanel.css') as any;
 
 interface AppearanceSettingState {
     showColorPicker: boolean
@@ -23,7 +24,7 @@ class AppearanceSetting extends Component<any, AppearanceSettingState> {
     }
 
     render() {
-        const { showColorPicker } = this.state
+        // const { showColorPicker } = this.state
 
         return (
             <div className={styles.appearanceSetting}>
@@ -94,7 +95,7 @@ interface SettingPanelState {
     activeCategoryIdx: number
 }
 
-export default class SettingPanel extends Component<any, SettingPanelState> {
+export default class SettingPanel extends Component<PageProps, SettingPanelState> {
 
     constructor(props: any) {
         super(props)

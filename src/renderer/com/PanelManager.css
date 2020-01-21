@@ -1,25 +1,32 @@
 
 .panelManager,
+.content,
 .page,
-.tagBar {
+.tagBar,
+.panel {
     position: relative;
     box-sizing: border-box;
+    width: 100%; height: 100%;
     overflow: hidden;
 }
 
 .panelManager {
-    width: 100%; height: calc(100% - 30px);
-}
-
-.page {
-    width: 100%; height: calc(100% - 25px);
+    height: calc(100% - 30px);
     background-color: rgb(34, 36, 53);
 }
 
+.page {
+    position: absolute;
+    top: 0; left: 0;
+    z-index: -1;
+}
+
+.content {
+    height: calc(100% - 25px);
+}
+
 .tagBar {
-    position: relative;
-    box-sizing: border-box;
-    width: 100%; height: 25px;
+    height: 25px;
     padding: 0px 8px;
     background-color: rgb(11, 12, 26);
     font-size: 12px;
@@ -34,6 +41,10 @@
     padding: 0px 10px;
     color: rgb(180, 180, 180);
     cursor: default;
+}
+
+.tag * {
+    vertical-align: top;
 }
 
 .tagRadius {
@@ -56,4 +67,35 @@
     background-color: rgb(34, 36, 53);
     border-bottom-left-radius: 7px 8px;
     border-bottom-right-radius: 7px 8px;
+}
+
+.panelWrapper {
+    position: absolute;
+    left: 0; top: 0;
+    height: 100%;
+}
+
+.panelDivider {
+    position: absolute;
+    width: 3px; height: 100%;
+    cursor: ew-resize;
+}
+
+.panelDivider::before {
+    content: '';
+    display: block;
+    position: relative;
+    width: 1px; height: 100%;
+    left: 1px;
+    background-color: rgb(80, 80, 80);
+}
+
+.activePanel::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 1px;
+    background-color: rgb(0, 204, 255);
+    z-index: 1000;
 }

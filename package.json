@@ -1,20 +1,24 @@
 {
-  "name": "terminal-d",
+  "name": "terd",
   "version": "0.1.0",
-  "main": "dist/main.js",
+  "main": "./build/main.js",
   "private": true,
+  "description": "Contracted terminal for Win users.",
+  "author": "Luncert",
   "scripts": {
-    "start": "npm-run-all build run-electron",
     "dev": "concurrently \"npm run watch\" \"electron .\"",
     "watch": "webpack --watch",
     "build": "webpack --config webpack.config.js",
-    "run-electron": "electron .",
-    "install-rebuild": "yarn install && electron-rebuild -f -w /node_modules/node-pty -m ./"
+    "electron": "electron .",
+    "rebuild-node-pty": "electron-rebuild -f -w /node_modules/node-pty -m ./",
+    "postinstall": "webpack --config-name terd && electron-builder install-app-deps && npm run rebuild-node-pty",
+    "dist": "electron-builder --win --x64 node-gyp-rebuild"
   },
   "dependencies": {
     "@types/react-motion": "^0.0.29",
-    "electron": "^7.1.8",
+    "chalk": "^3.0.0",
     "gulp": "^4.0.2",
+    "iconv-lite": "^0.5.1",
     "jquery": "^3.4.1",
     "node-pty": "^0.9.0",
     "open": "^7.0.0",
@@ -39,9 +43,12 @@
     "@types/react": "^16.9.17",
     "@types/react-dom": "^16.9.4",
     "@types/uuid": "^3.4.6",
+    "electron": "^7.1.8",
     "concurrently": "^5.0.2",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.4.2",
+    "electron-builder": "^22.2.0",
+    "electron-packager": "^14.2.0",
     "electron-rebuild": "^1.8.8",
     "file-loader": "^5.0.2",
     "html-webpack-plugin": "^3.2.0",
@@ -65,5 +72,26 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "build": {
+    "appId": "org.luncert.Terd",
+    "directories": {
+      "output": "dist"
+    },
+    "nsis": {
+      "installerIcon": "./public/favicon.ico",
+      "uninstallerIcon": "./public/favicon.ico",
+      "createDesktopShortcut": false,
+      "createStartMenuShortcut": false
+    },
+    "win": {
+      "target": ["nsis", "zip"],
+      "icon": "./public/favicon.ico"
+    },
+    "files": [
+      "build",
+      "node_modules"
+    ],
+    "npmRebuild": false
   }
 }

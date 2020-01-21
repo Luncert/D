@@ -2,9 +2,6 @@ const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 let common_config = {
-    node: {
-        __dirname: true
-    },
     mode: process.env.ENV || 'development',
     module: {
         rules: [{
@@ -13,6 +10,12 @@ let common_config = {
                 exclude: [
                     /node_modules/
                 ]
+            },
+            {
+                test: /node_modules[\/\\](iconv-lite)[\/\\].+/,
+                resolve: {
+                  aliasFields: ['main']
+                }
             },
             {
                 test: /\.css$/,
@@ -58,29 +61,35 @@ let common_config = {
 };
 
 let main_config = Object.assign({}, common_config, {
+    node: {
+        __dirname: false
+    },
     target: 'electron-main',
     entry: {
         main: './src/main/index.ts',
     },
     output: {
         filename: '[name].js',
-        path: path.resolve(__dirname, 'dist')
+        path: path.resolve(__dirname, 'build')
     },
 });
 
 let renderer_config = Object.assign({}, common_config, {
+    node: {
+        __dirname: true
+    },
     target: 'electron-renderer',
     entry: {
         renderer: './src/renderer/index.tsx',
     },
     output: {
         filename: '[name].js',
-        path: path.resolve(__dirname, 'dist')
+        path: path.resolve(__dirname, 'build')
     },
     plugins: [
         new CopyWebpackPlugin([{
             from: './public',
-            to: path.resolve(__dirname, 'dist')
+            to: path.resolve(__dirname, 'build')
         }])
     ]
 });
