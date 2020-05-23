@@ -80,6 +80,7 @@ export default class PanelManager extends Component<any, PanelManagerState> {
     }
 
     componentDidMount() {
+        // register key bindinds
         document.onkeydown = (evt) => am.emit('panel-manager', evt)
 
         am.register(this.switchPage.bind(this),
@@ -127,6 +128,7 @@ export default class PanelManager extends Component<any, PanelManagerState> {
     }
 
     bindWindowEvent() {
+        // listen window resize event and trigger panel contents to do resize
         this.onResize = () => {
             if (this.currentPageSplitted) {
                 this.computePageLayout()
@@ -135,7 +137,7 @@ export default class PanelManager extends Component<any, PanelManagerState> {
         }
         window.addEventListener('resize', this.onResize)
 
-        // on drag
+        // listen window drag event to adjust divider position as mouse moving
         this.onMouseMove = (evt: MouseEvent) => {
             if (this.draggingDivider) {
                 this.moveDivider(evt)
@@ -143,7 +145,7 @@ export default class PanelManager extends Component<any, PanelManagerState> {
         }
         window.addEventListener('mousemove', this.onMouseMove)
 
-        // stop drag
+        // stop divider dragging
         this.onMouseUp = () => {
             if (this.draggingDivider) {
                 this.dragAttr = null
